@@ -10,9 +10,13 @@ environment:
 
 # Install rust and run tests
 install:
+  # Install rust
   - curl https://sh.rustup.rs -sSf -o rustup-init.sh
   - sh rustup-init.sh -y --default-host "x86_64-apple-darwin"
   - source $HOME/.cargo/env
+  # Clone submodules
+  - git submodule init
+  - git submodule update
 test_script:
   - cargo test --verbose --no-default-features $CONFIGURATION
   - cargo test --verbose --release --no-default-features $CONFIGURATION
