@@ -1,3 +1,6 @@
+# `keycache-libsecureenclave-sys`
+This crate provides a sys-wrapper for <https://github.com/KizzyCode/secureenclave-c>.
+
 ## Bindgen
 To regenerate the bindings after an update, call bindgen from the `libsecureenclave-sys` root directory:
 ```sh

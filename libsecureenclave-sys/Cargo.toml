@@ -1,11 +1,11 @@
 [package]
 name = "keycache-libsecureenclave-sys"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 authors = ["KizzyCode Software Labs./Keziah Biermann <development@kizzycode.de>"]
 keywords = []
 categories = []
-description = "sys-wrapper for https://github.com/KizzyCode/secureenclave-c"
+description = "This crate provides a sys-wrapper for <https://github.com/KizzyCode/secureenclave-c>"
 license = "BSD-2-Clause OR MIT"
 repository = "https://github.com/KizzyCode/Keycache-rust"
 readme = "README.md"

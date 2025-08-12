@@ -1,7 +1,7 @@
 //! Platform implementation for macOS which uses the secure enclave
 
 use crate::keywrap::AuthLevel;
-use keycache_libsecureenclave_sys::ffi::{sep_buf_t, sep_permissions_t};
+use keycache_libsecureenclave_sys::{LibSecureEnclave, sep_buf_t, sep_permissions_t};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::fmt::{Display, Formatter};
@@ -55,7 +55,7 @@ pub fn create(auth_level: AuthLevel) -> Result<Vec<u8>, Error> {
     const EPHEMERAL_PERMS: sep_permissions_t = sep_permissions_t::sep_permissions_needs_unlock_once;
 
     // Load library and allocate error buffer
-    let libsecureenclave = unsafe { keycache_libsecureenclave_sys::load() };
+    let libsecureenclave = unsafe { LibSecureEnclave::load() };
     let mut error = SecureEnclaveError(sep_buf_t { len: 0, bytes: [0; _] });
 
     // Map authentication level into secure enclave permissions
@@ -89,7 +89,7 @@ pub fn create(auth_level: AuthLevel) -> Result<Vec<u8>, Error> {
 /// Unlocks a key-encryption-key via the associated metadata
 pub fn unlock(metadata: &[u8], _user_auth: Option<&[u8]>) -> Result<[u8; 32], Error> {
     // Load library and allocate error buffer
-    let libsecureenclave = unsafe { keycache_libsecureenclave_sys::load() };
+    let libsecureenclave = unsafe { LibSecureEnclave::load() };
     let mut error = SecureEnclaveError(sep_buf_t { len: 0, bytes: [0; _] });
 
     // Parse metadata
