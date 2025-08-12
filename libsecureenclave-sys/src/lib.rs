@@ -13,7 +13,7 @@ use std::sync::LazyLock;
 pub mod ffi;
 
 /// The binary contents of the dylib for dynamic installation
-pub const DYLIB_BIN: &[u8] = include_bytes!("../libsecureenclave/.build/release/libSecureEnclave-Dylib.dylib");
+pub const DYLIB_BIN: &[u8] = include_bytes!(env!("LIBSECUREENCLAVE_DYLIB_PATH"));
 
 /// Loads the dylib and returns the associated handle
 ///
