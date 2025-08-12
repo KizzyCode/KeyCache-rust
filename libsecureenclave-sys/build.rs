@@ -10,11 +10,12 @@ const CACHEDIR_TAG: &str = concat! {
 
 fn main() {
     // Build dylib
-    Command::new("swift")
+    let output = Command::new("swift")
         .args(["build", "--configuration", "release"])
         .current_dir("libsecureenclave")
         .output()
         .expect("failed to build libsecureenclave");
+    assert!(output.status.success(), "failed to build libsecureenclave: {}", String::from_utf8_lossy(&output.stderr));
 
     // Add cachedir-tag
     fs::write("./libsecureenclave/.build/CACHEDIR.TAG", CACHEDIR_TAG)
