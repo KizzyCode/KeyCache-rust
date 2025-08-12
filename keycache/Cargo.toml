@@ -1,0 +1,45 @@
+[package]
+name = "keycache"
+version = "0.1.0"
+edition = "2024"
+authors = ["KizzyCode Software Labs./Keziah Biermann <development@kizzycode.de>"]
+keywords = []
+categories = []
+description = "Seals a key using a secure element"
+license = "BSD-2-Clause OR MIT"
+repository = "https://github.com/KizzyCode/Keycache-rust"
+readme = "README.md"
+
+
+[[bin]]
+name = "keycache"
+path = "src/main.rs"
+
+
+[badges]
+appveyor = { repository = "KizzyCode/Keycache-rust" }
+
+
+[features]
+default = []
+
+
+[dependencies]
+aes-gcm = { version = "0.10.3", default-features = false, features = ["aes", "std"] }
+getrandom = { version = "0.3.3", default-features = false, features = ["std"] }
+serde = { version = "1.0.219", default-features = false, features = ["std", "derive"] }
+serde_asn1_der = { version = "0.8.0", default-features = false }
+serde_bytes = { version = "0.11.17", default-features = false, features = ["std"] }
+sha2 = { version = "0.10.9", default-features = false, features = ["std"] }
+
+[target.'cfg(target_os="macos")'.dependencies]
+keycache-libsecureenclave-sys = { version = "0.1.0", path = "../libsecureenclave-sys" }
+
+[dev-dependencies]
+
+
+[profile.release]
+overflow-checks = true
+
+[profile.bench]
+overflow-checks = true

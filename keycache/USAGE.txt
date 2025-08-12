@@ -1,0 +1,62 @@
+keycache - Seals a key using a secure element
+
+SYNOPSIS
+    keycache [OPTIONS] NAME
+
+DESCRIPTION
+    `keycache` is an application that can cache passwords and other secret data in a semipermanent way, without exposing
+    them to the filesystem or similar. It works by sealing the key with the built-in secure element and storing the
+    encrypted, sealed keyfile instead.
+
+    `keycache` provides a quick-and-easy compromise that allows you to store and provide individual secrets in a
+    non-interactive way for scripts etc, or in a fast-interactive way via PIN or biometry; as opposed to plaintext files
+    or dedicated one-size-fits-all password manager setups.
+
+OPTIONS
+    --seal=<level>
+        Reads a key from stdin and seals it with the required authentication level for access. This is an optional flag.
+        
+        Available levels are:
+        - `unauthenticated`: Anyone, who has access to the sealed keyfile can unlock the key without additional
+          authentication, as long the secure element is available and cooperative.
+        - `interactive`: In addition to the sealed keyfile, the user must provide a PIN, or perform a similar
+          interactive challenge to unseal the key (see `--userauth`)
+        - `biometry`: In addition to the sealed keyfile, the user must perform a biometric challenge to ensure that they
+          themselves are physically present to unseal the key. Please note that for security reasons, implementations
+          may invalidate cached keys if the enrolled biometry changes.
+
+        Example:
+            keycache --seal=biometry mykey
+
+    --userauth=<auth>
+        Specifies the user authentication secret, such as a PIN or password, used to authenticate the user against the
+        secure element. This is an optional flag.
+
+        Example:
+            keycache --userauth=1234 mykey
+
+NAME
+    The name of the key. This argument is required. The NAME argument can be any string and identifies the key on which
+    operations will be performed.
+
+    Example:
+        keycache mykey
+
+EXAMPLES
+    1. Basic key operation without authentication:
+        keycache mykey
+        This command unseals `mykey` and writes the contents to stdout.
+
+    2. Key operation with user authentication (e.g., PIN):
+        keycache --userauth=1234 mykey
+
+        This command provides `1234` as password/PIN to the secure element and attempts to unseal `mykey` and write the
+        contents to stdout.
+
+    3. Key creation with a specified authentication level (e.g. `biometry`):
+        keycache --seal=biometry mykey
+        This seals the input as `mykey`, and requires a biometric challenge to unseal it again.
+
+EXIT STATUS
+    0   The command was successful.
+    1   An error occurred due to invalid arguments or missing required parameters.

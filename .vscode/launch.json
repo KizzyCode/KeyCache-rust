@@ -1,0 +1,60 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "cargo test",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin",
+                    "--package=keycache"
+                ],
+                "filter": {
+                    "name": "keycache",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:KeyCache}/libsecureenclave-sys/secureenclave-c",
+            "name": "Debug SecureEnclave-Example (libsecureenclave-sys/secureenclave-c)",
+            "program": "${workspaceFolder:KeyCache}/libsecureenclave-sys/secureenclave-c/.build/debug/SecureEnclave-Example",
+            "preLaunchTask": "swift: Build Debug SecureEnclave-Example (libsecureenclave-sys/secureenclave-c)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:KeyCache}/libsecureenclave-sys/secureenclave-c",
+            "name": "Release SecureEnclave-Example (libsecureenclave-sys/secureenclave-c)",
+            "program": "${workspaceFolder:KeyCache}/libsecureenclave-sys/secureenclave-c/.build/release/SecureEnclave-Example",
+            "preLaunchTask": "swift: Build Release SecureEnclave-Example (libsecureenclave-sys/secureenclave-c)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:KeyCache}/libsecureenclave-sys/libsecureenclave",
+            "name": "Debug SecureEnclave-Example (libsecureenclave-sys/libsecureenclave)",
+            "program": "${workspaceFolder:KeyCache}/libsecureenclave-sys/libsecureenclave/.build/debug/SecureEnclave-Example",
+            "preLaunchTask": "swift: Build Debug SecureEnclave-Example (libsecureenclave-sys/libsecureenclave)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:KeyCache}/libsecureenclave-sys/libsecureenclave",
+            "name": "Release SecureEnclave-Example (libsecureenclave-sys/libsecureenclave)",
+            "program": "${workspaceFolder:KeyCache}/libsecureenclave-sys/libsecureenclave/.build/release/SecureEnclave-Example",
+            "preLaunchTask": "swift: Build Release SecureEnclave-Example (libsecureenclave-sys/libsecureenclave)"
+        }
+    ]
+}

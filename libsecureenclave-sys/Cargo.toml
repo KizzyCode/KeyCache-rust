@@ -1,0 +1,34 @@
+[package]
+name = "keycache-libsecureenclave-sys"
+version = "0.1.0"
+edition = "2024"
+authors = ["KizzyCode Software Labs./Keziah Biermann <development@kizzycode.de>"]
+keywords = []
+categories = []
+description = "sys-wrapper for https://github.com/KizzyCode/secureenclave-c"
+license = "BSD-2-Clause OR MIT"
+repository = "https://github.com/KizzyCode/Keycache-rust"
+readme = "README.md"
+build = "build.rs"
+
+
+[badges]
+appveyor = { repository = "KizzyCode/Keycache-rust" }
+
+
+[features]
+default = []
+
+
+[dependencies]
+libc = { version = "0.2.174", default-features = false, features = ["std"] }
+libloading = { version = "0.8.8", default-features = false }
+
+[dev-dependencies]
+
+
+[profile.release]
+overflow-checks = true
+
+[profile.bench]
+overflow-checks = true

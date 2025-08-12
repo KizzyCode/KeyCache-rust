@@ -1,0 +1,3 @@
+[submodule "libsecureenclave-sys/libsecureenclave"]
+	path = libsecureenclave-sys/libsecureenclave
+	url = https://github.com/KizzyCode/secureenclave-c
