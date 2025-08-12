@@ -1,6 +1,6 @@
+use std::env;
 use std::path::Path;
 use std::process::Command;
-use std::{env, fs};
 
 fn main() {
     // Assemble target dir path for build artifacts
