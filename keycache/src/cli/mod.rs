@@ -4,32 +4,36 @@ use keycache::AuthLevel;
 use std::env;
 use std::io::{Error, ErrorKind};
 use std::ops::Deref;
+use std::path::{Path, PathBuf};
 
 /// The filename to operate on
 #[derive(Debug, Clone)]
-pub struct Filename(String);
+pub struct Filename(PathBuf);
+impl Filename {
+    /// The file extension
+    const EXTENSION: &str = ".keycache";
+}
 impl Deref for Filename {
-    type Target = String;
+    type Target = Path;
 
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 impl From<String> for Filename {
-    fn from(name: String) -> Self {
-        // Build sanitized keyfile name
-        let filename: String = (name.bytes())
-            .filter_map(|byte| match byte {
-                // Filter/sanitize input characters
-                byte if byte.is_ascii_alphanumeric() => Some(byte as char),
-                b'.' | b'_' | b'-' => Some(byte as char),
-                _ => None,
-            })
-            .take(128)
-            // Append file extension
-            .chain(".keycache".chars())
-            .collect();
-        Self(filename)
+    fn from(filepath: String) -> Self {
+        // See if the path needs post-processing
+        let filepath = Path::new(&filepath);
+        let false = filepath.exists() else {
+            // If the path exists as-is, it is probably complete
+            return Self(filepath.to_owned());
+        };
+
+        // Append extension if needed
+        match filepath.extension() {
+            None => Self(filepath.with_extension(Self::EXTENSION)),
+            _ => Self(filepath.to_owned()),
+        }
     }
 }
 

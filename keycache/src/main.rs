@@ -17,6 +17,7 @@ mod cli;
 
 use crate::cli::CliArgs;
 use std::io::{self, Error, Read, Write};
+use std::ops::Deref;
 use std::{fs, process};
 
 /// Display the help and exit with `1`
@@ -47,12 +48,12 @@ fn application() -> Result<(), Error> {
             let sealed_key = keycache::seal(&key, flag_create, user_auth)?;
 
             // Write sealed key as `name`
-            fs::write(name.as_str(), sealed_key)?;
+            fs::write(name.deref(), sealed_key)?;
             Ok(())
         }
         None => {
             // Read sealed key from file and open it
-            let sealed_key = fs::read(name.as_str())?;
+            let sealed_key = fs::read(name.deref())?;
             let key = keycache::open(&sealed_key, user_auth)?;
 
             // Write key to stdout
