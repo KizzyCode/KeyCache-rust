@@ -15,10 +15,10 @@
 
 mod cli;
 
-use crate::cli::CliArgs;
+use crate::cli::{CliArgs, Environment};
 use std::io::{self, Error, Read, Write};
 use std::ops::Deref;
-use std::{fs, process};
+use std::{env, fs, process};
 
 /// Display the help and exit with `1`
 fn abort(error: Error) -> ! {
@@ -37,7 +37,19 @@ fn abort(error: Error) -> ! {
 fn application() -> Result<(), Error> {
     // Read CLI arguments
     let CliArgs { flag_userauth, flag_seal: flag_create, name } = CliArgs::from_env()?;
-    let user_auth = flag_userauth.as_ref().map(|userauth| userauth.as_bytes());
+    let Environment { cwd, userauth } = Environment::from_env();
+
+    // Change working dir if given
+    if let Some(cwd) = cwd {
+        env::set_current_dir(cwd)?;
+    }
+
+    // Select user auth if given (flag has higher prio than env)
+    let user_auth = match (&flag_userauth, &userauth) {
+        (Some(flag_userauth), _) => Some(flag_userauth.as_bytes()),
+        (_, Some(userauth)) => Some(userauth.as_bytes()),
+        _ => None,
+    };
 
     // Execute command
     match flag_create {

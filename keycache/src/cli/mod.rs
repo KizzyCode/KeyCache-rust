@@ -37,6 +37,21 @@ impl From<String> for Filename {
     }
 }
 
+/// Environment configuration
+#[derive(Debug, Clone)]
+pub struct Environment {
+    /// A working directory to switch to before operating
+    pub cwd: Option<String>,
+    /// Provided user authentication (e.g. PIN)
+    pub userauth: Option<String>,
+}
+impl Environment {
+    /// Reads the given environment variables from the process environment
+    pub fn from_env() -> Self {
+        Self { cwd: env::var("KEYCACHE_CWD").ok(), userauth: env::var("KEYCACHE_USERAUTH").ok() }
+    }
+}
+
 /// CLI arguments
 #[derive(Debug, Clone)]
 pub struct CliArgs {
